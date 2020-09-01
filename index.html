@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Music Player</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+            integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
+            crossorigin="anonymous" />
+        <link rel="stylesheet" href="css/style.css" />
+        <link rel="shortcut icon" href="images/favicon.ico" />
+    </head>
+
+    <body>
+        <h2 id="heading">
+            Basic Music Player App with CSS and JS Implementation
+        </h2>
+        <div class="main_div">
+            <div class="music_container">
+                <h2 id="title">
+                </h2>
+                <h3 id="artist"></h3>
+                <div class="img_container">
+                    <img src="" alt="Image">
+                </div>
+                <audio src="">
+                </audio>
+                <!-- controls -->
+                <div class="music_controls">
+                    <i class="fas fa-backward" id="prev" title="Previous"></i>
+                    <i class="fas fa-play main_button" id="play" title="Play"></i>
+                    <i class="fas fa-forward" id="next" title="Next"></i>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        const audio = document.querySelector('audio');
+        const img = document.querySelector('img');
+        const play = document.getElementById('play');
+        const title = document.getElementById('title');
+        const artist = document.getElementById('artist');
+        const prev = document.getElementById('prev');
+        const next = document.getElementById('next');
+
+        const songs = [{
+                name: "music_1",
+                title: "Sample",
+                artist: "Kevin MacLeod"
+            },
+            {
+                name: "music_2",
+                title: "Khai",
+                artist: "Bartika Eam Rai"
+            }, {
+                name: "music_3",
+                title: "Bad Guy",
+                artist: "Billie Elish"
+            },
+            {
+                name: "music_4",
+                title: "Maicha",
+                artist: "Emerge"
+            }
+        ]
+
+        let isPlaying = false;
+        const playMusic = () => {
+            audio.play();
+            play.classList.replace('fa-play', 'fa-pause');
+            img.classList.add('anime');
+            isPlaying = true;
+        }
+        const pauseMusic = () => {
+            audio.pause();
+            play.classList.replace('fa-pause', 'fa-play');
+            img.classList.remove('anime');
+            isPlaying = false;
+        }
+        play.addEventListener("click", () => {
+            isPlaying ? pauseMusic() : playMusic();
+        });
+
+        const loadSong = (songs) => {
+            title.textContent = songs.title;
+            artist.textContent = songs.artist;
+            audio.src = "music/" + songs.name + ".mp3";
+            img.src = "images/" + songs.name + ".jpg";
+        };
+        songIndex = 0;
+        loadSong(songs[songIndex]);
+        const prevSong = () => {
+            songIndex = (songIndex - 1 + songs.length) % songs.length;
+            loadSong(songs[songIndex]);
+            playMusic();
+        }
+        const nextSong = () => {
+            songIndex = (songIndex + 1) % songs.length;
+            loadSong(songs[songIndex]);
+            playMusic();
+        }
+        next.addEventListener('click', nextSong);
+        prev.addEventListener('click', prevSong);
+        audio.addEventListener('ended', nextSong);
+    </script>
+
+</html>

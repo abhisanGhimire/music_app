@@ -13,7 +13,7 @@ html {
     font-family: "Jost", sans-serif;
 }
 
-#heading {
+#headingDesktop {
     width: 100vw;
     height: 10vh;
     place-items: center;
@@ -27,6 +27,33 @@ html {
     text-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.3);
     background-color: #f6f6f6;
 }
+
+#headingMobile {
+    display: none;
+}
+
+@media (max-width: 850px) {
+    #headingMobile {
+        width: 100vw;
+        height: 10vh;
+        place-items: center;
+        display: grid;
+        text-transform: uppercase;
+        letter-spacing: 0.2rem;
+        word-spacing: 0.5rem;
+        color: #171717;
+        font-size: 2.5rem;
+        font-weight: 500;
+        text-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.3);
+        background-color: #f6f6f6;
+    }
+
+    #headingDesktop {
+        display: none;
+    }
+}
+
+
 
 .main_div {
     width: 100vw;

@@ -32,10 +32,10 @@
                 <!-- Progress Bar -->
                 <div class="progressbar_container" id="progress_container">
                     <div class="progress_duration_meter">
-                        <div id="current_time"></div>
-                        0:00
+                        <div id="current_time"> 00:00</div>
+
+                        <div id="duration">00:00</div>
                     </div>
-                    <div id="duration"></div>
                 </div>
                 <div class="progress_div" id="progress_div">
                     <div class="progress" id="progress"></div>
@@ -57,7 +57,10 @@
         const artist = document.getElementById('artist');
         const prev = document.getElementById('prev');
         const next = document.getElementById('next');
-
+        let progress = document.getElementById('progress');
+        let music_currentTime = document.getElementById('current_time');
+        let music_duration = document.getElementById('duration');
+        let progress_div = document.getElementById('progress_div');
         const songs = [{
                 name: "music_1",
                 title: "Impact Moderato",
@@ -113,7 +116,52 @@
             songIndex = (songIndex + 1) % songs.length;
             loadSong(songs[songIndex]);
             playMusic();
+
         }
+        // Progress Bar
+        audio.addEventListener('timeupdate', (event) => {
+            const {
+                currentTime,
+                duration
+            } = event.srcElement;
+            let progress_time = (currentTime / duration) * 100;
+            progress.style.width = `${progress_time}%`;
+            //Total Time
+            let min_duration = Math.floor(duration / 60);
+            let sec_duration = Math.floor(duration % 60);
+            if (min_duration < 10) {
+                min_duration = `0${min_duration}`;
+            }
+            if (sec_duration < 10) {
+                sec_duration = `0${sec_duration}`;
+            }
+            if (duration) {
+                let total_duration = `${min_duration}:${sec_duration}`;
+                music_duration.textContent = total_duration;
+            }
+            // Current Time
+            let min_currentTime = Math.floor(currentTime / 60);
+            let sec_currentTime = Math.floor(currentTime % 60);
+            if (sec_currentTime < 10) {
+                sec_currentTime = `0${sec_currentTime}`;
+            }
+            if (min_currentTime < 10) {
+                min_currentTime = `0${min_currentTime}`;
+            }
+            if (currentTime) {
+                let total_currentTime = `${min_currentTime}:${sec_currentTime}`;
+                music_currentTime.textContent = total_currentTime;
+            }
+        });
+        progress_div.addEventListener('click', (event) => {
+            const {
+                duration
+            } = audio;
+            console.log(progress_div.clientWidth, event.srcElement.clientWidth);
+            let move_progress = (event.offsetX / progress_div.clientWidth) *
+                duration;
+            audio.currentTime = move_progress;
+        });
         next.addEventListener('click', nextSong);
         prev.addEventListener('click', prevSong);
         audio.addEventListener('ended', nextSong);
